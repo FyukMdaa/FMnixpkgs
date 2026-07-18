@@ -20,15 +20,17 @@
           };
         in
         {
-          beutl = pkgs.callPackage ./packages/beutl/beutl.nix { };
-          sfmono-square = pkgs.callPackage ./packages/sfmono-square/sfmono-square.nix { inherit inputs; };
+          beutl = pkgs.callPackage ./packages/beutl/default.nix { };
+          sfmono-square = pkgs.callPackage ./packages/sfmono-square/default.nix { inherit inputs; };
+          keyroost = pkgs.callPackage ./packages/keyroost/default.nix { };
         }
       );
 
       # Overlayの定義
       overlays.default = final: prev: {
-        beutl = final.callPackage ./packages/beutl/beutl.nix { };
-        sfmono-square = final.callPackage ./packages/sfmono-square/sfmono-square.nix { inherit inputs; };
+        beutl = final.callPackage ./packages/beutl/default.nix { };
+        sfmono-square = final.callPackage ./packages/sfmono-square/default.nix { inherit inputs; };
+        keyroost = final.callPackage ./packages/keyroost/default.nix { };
       };
     };
 }
