@@ -7,6 +7,7 @@
   stdenv,
   wayland,
   nix-update-script,
+  pkgs
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -29,6 +30,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   buildInputs = [
     libxkbcommon
+    pkgs.pcsclite
   ]
   ++ lib.optionals stdenv.isLinux [
     wayland
