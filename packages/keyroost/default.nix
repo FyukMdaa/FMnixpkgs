@@ -7,7 +7,9 @@
   stdenv,
   wayland,
   nix-update-script,
-  pkgs
+  pkgs,
+  makeWrapper,
+  ...
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -26,15 +28,24 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   nativeBuildInputs = [
     pkg-config
+    makeWrapper
   ];
 
-  buildInputs = [
-    libxkbcommon
-    pkgs.pcsclite
-  ]
-  ++ lib.optionals stdenv.isLinux [
+  buildInputs = with pkgs; [
     wayland
+    libxkbcommon
+    pcsclite
+    libGL
   ];
+
+  postFixup = ''
+    wrapProgram $out/bin/keyroost \
+      --prefix LD_LIBRARY_PATH : ${pkgs.lib.makeLibraryPath [
+        pkgs.wayland
+        pkgs.libxkbcommon
+        pkgs.libGL
+      ]}
+  '';
 
   passthru.updateScript = nix-update-script { };
 
